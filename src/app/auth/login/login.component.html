@@ -1,0 +1,23 @@
+<app-navbar></app-navbar>
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+        <div class="form-group">
+          <label for="exampleInputEmail1">Email address</label>
+          <input type="email" class="form-control" formControlName="email" aria-describedby="emailHelp">
+          <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">Password</label>
+          <input type="password" class="form-control" formControlName="password">
+        </div>
+        <button type="submit"class="btn btn-primary">Submit</button>
+        <a class="btn btn-primary" [routerLink]="['/register']">Register</a>
+      </form>
+      <div class="form-group mt-3">
+        <p>NO tienes cuenta? <a [routerLink]="['/register']"> Register</a></p>
+      </div>
+    </div>
+  </div>
+</div>
