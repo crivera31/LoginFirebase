@@ -8,11 +8,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { SendEmailComponent } from './send-email/send-email.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 
 
 
 @NgModule({
-  declarations: [LoginComponent, RegisterComponent, SendEmailComponent],
+  declarations: [LoginComponent, RegisterComponent, SendEmailComponent, ForgotPasswordComponent],
   imports: [
     CommonModule,
     RouterModule,

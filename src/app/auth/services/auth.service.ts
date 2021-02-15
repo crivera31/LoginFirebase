@@ -11,10 +11,17 @@ export class AuthService {
   public user: any;
   
   constructor(public afAuth: AngularFireAuth) { }
+
+  async resetPassword(email: string): Promise<void>{
+    try {
+      return this.afAuth.sendPasswordResetEmail(email);
+    } catch (error) {
+      console.log(error)
+    }
+  }
   async sendEmailVerification(): Promise<void> {
     return await(await this.afAuth.currentUser).sendEmailVerification();
   }
-
   async login(email: string, password: string) {
     try {
       const result = await this.afAuth.signInWithEmailAndPassword(email, password);
