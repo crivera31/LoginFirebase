@@ -29,11 +29,15 @@ export class LoginComponent implements OnInit {
     const { email,password } = this.loginForm.value;
     try {
       const user = await this.authService.login(email, password);
-      if(user) {
+      if(user && user.user.emailVerified) {
         this.isLogged = true;
-        console.log('User logueado: ' ,user);
+        console.log('User logueado: ' ,user); /**con el atributo emailVerified veremos */
         //redirec to home
         this.router.navigateByUrl('/pages');
+      } else if(user) {
+        this.router.navigateByUrl('/send-email');
+      } else {
+        this.router.navigateByUrl('/register');
       }
       
     } catch (error) {

@@ -11,11 +11,14 @@ export class AuthService {
   public user: any;
   
   constructor(public afAuth: AngularFireAuth) { }
+  async sendEmailVerification(): Promise<void> {
+    return await(await this.afAuth.currentUser).sendEmailVerification();
+  }
 
   async login(email: string, password: string) {
     try {
       const result = await this.afAuth.signInWithEmailAndPassword(email, password);
-      // this.user = JSON.stringify(result.user);
+      this.user = JSON.stringify(result.user);
       console.log(result.user.email);
       localStorage.setItem('email', result.user.email);
       return result;
@@ -27,6 +30,7 @@ export class AuthService {
   async register(email: string, password: string) {
     try {
       const result = await this.afAuth.createUserWithEmailAndPassword(email, password);
+      this.sendEmailVerification();
       return result;
 
     } catch (error) {
