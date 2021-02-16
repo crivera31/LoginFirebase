@@ -15,13 +15,8 @@ export class NavbarComponent implements OnInit {
     this.isLogged = false;    
   }
 
-  ngOnInit() {
-    this.onLoggin();
-  }
-
-  async onLoggin() {
+  async ngOnInit() {
     this.user = await this.authService.getCurrentUser();
-    console.log(this.user);
     if (this.user) {
       this.isLogged = true;
       console.log('Usuairo logueado')
@@ -30,6 +25,7 @@ export class NavbarComponent implements OnInit {
       console.log('Usuairo no logueado')
     }
   }
+  
   async onLogout() {
     try {
       await this.authService.logout();

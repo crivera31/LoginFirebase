@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { first } from 'rxjs/operators';
 import firebase from 'firebase/app';
 import User from 'firebase';
+
+import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
 
 @Injectable({
@@ -10,7 +12,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 export class AuthService {
   public user: any;
   
-  constructor(public afAuth: AngularFireAuth) { }
+  constructor(public afAuth: AngularFireAuth,private firestore: AngularFirestore) { }
 
   async resetPassword(email: string): Promise<void>{
     try {
@@ -25,18 +27,24 @@ export class AuthService {
   async login(email: string, password: string) {
     try {
       const result = await this.afAuth.signInWithEmailAndPassword(email, password);
-      this.user = JSON.stringify(result.user);
+      console.log(result)
+      // this.user = JSON.stringify(result.user);
       console.log(result.user.email);
       localStorage.setItem('email', result.user.email);
       return result;
 
     } catch (error) {
-      console.log(error);
+      console.log(JSON.stringify(error));
     }
   }
-  async register(email: string, password: string) {
+  async register(email: string, password: string, username: string) {
     try {
       const result = await this.afAuth.createUserWithEmailAndPassword(email, password);
+      console.log(result.user);
+      const { uid } = result.user;
+      /**guardar en firestore */
+      await this.crearUsuario(uid, email, username);
+
       this.sendEmailVerification();
       return result;
 
@@ -54,5 +62,16 @@ export class AuthService {
   }
   getCurrentUser() {
     return this.afAuth.authState.pipe(first()).toPromise();
+  }
+
+  /**guardar en firestore */
+  crearUsuario(uid: string, email: string, username: string) {
+
+    return this.firestore.collection("usuarios").doc(uid).set({
+      uid: uid,
+      email: email,
+      username: username,
+      enabled: 1
+    });
   }
 }
